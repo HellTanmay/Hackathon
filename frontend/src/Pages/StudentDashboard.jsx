@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
+import StudentAnalytics from './Analytics';
 const StudentDashboard = () => {
   const [selectedResume, setSelectedResume] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -77,7 +78,7 @@ const StudentDashboard = () => {
   if (!resumeUploaded) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="min-w-md mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Student Dashboard</h1>
@@ -116,7 +117,12 @@ const StudentDashboard = () => {
               Your resume will be processed securely. You can proceed to tests once uploaded.
             </p>
           </section>
+          <section className="bg-white rounded-lg shadow-md p-6 w-full">
+
+            <StudentAnalytics/>
+          </section>
         </div>
+
       </div>
     );
   }

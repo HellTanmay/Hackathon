@@ -8,6 +8,7 @@ import HrTest from "./Pages/HrTest";
 import TechnicalTest from "./Pages/TechnicalTest";
 import ProblemSolving from "./Pages/Problem-solving";
 import StudentAnalytics from "./Pages/Analytics";
+import AuthPage from "./Pages/AuthPages/Auth";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/techincal-test" element={<TechnicalTest />} />
           <Route path="/problem-solving" element={<ProblemSolving />} />
           <Route path="/analytics" element={<StudentAnalytics />} />
+          <Route path="/auth" element={<AuthPage />} />
 
         
         </Routes>
