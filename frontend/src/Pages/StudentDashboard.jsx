@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Link } from 'react-router';
 const StudentDashboard = () => {
   const [selectedResume, setSelectedResume] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -110,12 +110,11 @@ const StudentDashboard = () => {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">HR Test</h3>
             <p className="text-gray-600 mb-4 text-sm">Assess your soft skills and behavioral fit.</p>
-            <button
-              onClick={() => handleTestClick('HR')}
+            <Link to={'/test-hr'}
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium"
             >
               Take HR Test
-            </button>
+            </Link>
           </div>
 
           {/* Technical Test Button */}
@@ -127,12 +126,12 @@ const StudentDashboard = () => {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Technical Test</h3>
             <p className="text-gray-600 mb-4 text-sm">Evaluate your domain-specific knowledge.</p>
-            <button
-              onClick={() => handleTestClick('Technical')}
+            <Link to={'/techincal-test'}
+             
               className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors font-medium"
             >
               Take Technical Test
-            </button>
+            </Link>
           </div>
 
           {/* Problem Solving Test Button */}
@@ -144,12 +143,12 @@ const StudentDashboard = () => {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Problem Solving Test</h3>
             <p className="text-gray-600 mb-4 text-sm">Test your logical thinking and analytical skills.</p>
-            <button
-              onClick={() => handleTestClick('Problem Solving')}
+            <Link to={'/problem-solving'}
+              
               className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors font-medium"
             >
               Take Problem Solving Test
-            </button>
+            </Link>
           </div>
         </section>
 
