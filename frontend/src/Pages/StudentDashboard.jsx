@@ -5,39 +5,74 @@ const StudentDashboard = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [resumeUploaded, setResumeUploaded] = useState(false);
 
-  const handleResumeUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  // const handleResumeUpload = async (event) => {
+  //   const file = event.target.files[0];
+  //   if (!file) return;
 
-    // Validate file type (resume formats)
-    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    if (!allowedTypes.includes(file.type)) {
-      alert('Please upload a valid resume file (PDF, DOC, or DOCX).');
-      return;
-    }
+  //   // Validate file type (resume formats)
+  //   const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  //   if (!allowedTypes.includes(file.type)) {
+  //     alert('Please upload a valid resume file (PDF, DOC, or DOCX).');
+  //     return;
+  //   }
 
-    setIsUploading(true);
-    setSelectedResume(file);
+  //   setIsUploading(true);
+  //   setSelectedResume(file);
 
-    // Simulate upload (replace with actual API call)
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Mock delay
-      console.log('Resume uploaded:', file.name);
+  //   // Simulate upload (replace with actual API call)
+  //   try {
+  //     await new Promise((resolve) => setTimeout(resolve, 2000)); // Mock delay
+  //     console.log('Resume uploaded:', file.name);
+  //     setResumeUploaded(true); // Proceed to dashboard
+  //   } catch (error) {
+  //     console.error('Upload failed:', error);
+  //     alert('Upload failed. Please try again.');
+  //   } finally {
+  //     setIsUploading(false);
+  //   }
+  // };
+
+ const handleResume = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Validate file type (resume formats)
+  const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  if (!allowedTypes.includes(file.type)) {
+    alert('Please upload a valid resume file (PDF, DOC, DOCX).');
+    return;
+  }
+
+  setIsUploading(true);
+  setSelectedResume(file);
+
+  const formData = new FormData();
+  formData.append('file', file);
+  // Optional: formData.append('user_id', 'some_user_id'); // If authenticated
+
+  try {
+    const response = await fetch('http://localhost:5000/upload_resume', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      console.log('Resume uploaded:', data.filename);
       setResumeUploaded(true); // Proceed to dashboard
-    } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Upload failed. Please try again.');
-    } finally {
-      setIsUploading(false);
+      // Optional: Store file_id in state or localStorage for later use
+    } else {
+      throw new Error(data.error || 'Upload failed');
     }
-  };
+  } catch (error) {
+    console.error('Upload failed:', error);
+    alert('Upload failed. Please try again.');
+  } finally {
+    setIsUploading(false);
+  }
+};
 
-  const handleTestClick = (testType) => {
-    // Handle navigation or modal opening for the test
-    // For now, log the action; in a real app, use React Router or modals
-    console.log(`Starting ${testType} test...`);
-    alert(`Redirecting to ${testType} Test. (Implement navigation here)`);
-  };
 
   if (!resumeUploaded) {
     return (
@@ -59,7 +94,7 @@ const StudentDashboard = () => {
               <input
                 type="file"
                 accept=".pdf,.doc,.docx"
-                onChange={handleResumeUpload}
+                onChange={handleResume}
                 disabled={isUploading}
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
@@ -89,7 +124,7 @@ const StudentDashboard = () => {
   // Render Dashboard after upload
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Student Dashboard</h1>
