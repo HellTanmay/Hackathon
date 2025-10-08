@@ -10,6 +10,7 @@ import TechnicalTest from "./Pages/TechnicalTest";
 import StudentAnalytics from "./Pages/Analytics";
 import AuthPage from "./Pages/AuthPages/Auth";
 import AptitudeTest from "./Pages/Aptitde";
+import Pages from "./Pages/Pages";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/problem-solving" element={<AptitudeTest />} />
           <Route path="/analytics" element={<StudentAnalytics />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/pages" element={<Pages />} />
 
         
         </Routes>

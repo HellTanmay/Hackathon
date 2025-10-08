@@ -20,6 +20,7 @@ import google.generativeai as genai
 from datetime import datetime
 from dotenv import load_dotenv  # Optional: pip install python-dotenv
 
+
 # Load .env if present (optional)
 load_dotenv()
 
@@ -293,18 +294,10 @@ def get_student_analytics():
              return jsonify({'error': str(e)}), 500
          
 
-# --- NEW: INTERNAL APTITUDE QUESTION BANK ---
-# This list contains all possible questions for the quiz.
-# I have added 20 questions to start. You can easily add more to reach 100.
-# Each question is a dictionary with "question", the correct "answer", and three "incorrect" options.
+
 
 APTITUDE_QUESTION_BANK = [
-    # --- Instructions to Add More ---
-    # To add a new question, simply copy one of the blocks below, paste it at the end of the list,
-    # and change the "question", "answer", and "incorrect" values.
-    # Make sure to add a comma after the closing brace } of each question block.
-    
-    # --- Category: Percentages ---
+
     {
         "question": "What is 35% of 200?",
         "answer": "70",
@@ -622,6 +615,303 @@ def submit_answers():
         'total': total_questions,
         'percentage': final_score_percent
     })
+
+
+
+
+# # --- Configure Google API Key ---
+# try:
+#     GOOGLE_API_KEY = "AIzaSyDdE0m56q25P4Pma_s7Z0EbRGKJT3XEOMs" # PASTE YOUR KEY HERE
+#     genai.configure(api_key=GOOGLE_API_KEY)
+#     model = genai.GenerativeModel('models/gemini-pro-latest')
+#     print("✅ Google Gemini model for Resume Analyzer initialized successfully.")
+# except Exception as e:
+#     print(f"❌ ERROR: Could not initialize Google Gemini. Error: {e}")
+#     model = None
+
+# # --- NEW: Master Prompt for JSON Output ---
+# GEMINI_PROMPT_TEMPLATE = """
+# You are an expert career coach. Analyze the following resume text for an entry-level tech role.
+# Respond with a single, clean JSON object ONLY. Do not include any other text or markdown formatting.
+# The JSON object must have these exact keys: "overall_score", "strengths", "weaknesses", "before_after_example", "learning_path", and "final_advice".
+
+# - "overall_score": An integer between 0 and 100.
+# - "strengths": An array of 3 short strings.
+# - "weaknesses": An array of 3 short strings.
+# - "before_after_example": An object with two keys, "before" and "after", showing a rewritten improvement.
+# - "learning_path": An array of objects, where each object has a "skill" and a "resource" key.
+# - "final_advice": A single, concise string.
+
+# Resume Text:
+# ---
+# {resume_text}
+# ---
+# """
+
+# def extract_text_from_file(file_stream, filename):
+#     text = ""
+#     if filename.endswith('.pdf'):
+#         with fitz.open(stream=file_stream.read(), filetype="pdf") as doc:
+#             for page in doc:
+#                 text += page.get_text()
+#     elif filename.endswith('.docx'):
+#         doc = docx.Document(file_stream)
+#         for para in doc.paragraphs:
+#             text += para.text + "\n"
+#     return text
+
+
+# @app.route('/analyze_resume', methods=['POST'])
+# def analyze_resume():
+#     if not model or GOOGLE_API_KEY == "YOUR_API_KEY":
+#         return "Error: Gemini API is not configured.", 500
+
+#     if 'resume_file' not in request.files: return "No file part.", 400
+#     file = request.files['resume_file']
+#     if file.filename == '': return "No file selected.", 400
+
+#     if file and (file.filename.endswith('.pdf') or file.filename.endswith('.docx')):
+#         try:
+#             extracted_text = extract_text_from_file(file.stream, file.filename)
+#             if not extracted_text.strip(): return "Could not extract text.", 400
+
+#             prompt = GEMINI_PROMPT_TEMPLATE.format(resume_text=extracted_text)
+#             response = model.generate_content(prompt)
+            
+#             # Clean and parse the JSON response from Gemini
+#             json_text = response.text.strip().replace("json", "").replace("", "")
+#             analysis_data = json.loads(json_text)
+#             return jsonify(analysis_data)
+
+#         except Exception as e:
+#             print(f"An error occurred during analysis: {e}")
+#             return "An internal error occurred. The AI may have returned an invalid response. Please try again.", 500
+#     else:
+#         return "Invalid file type. Please upload a PDF or DOCX file.", 400
+
+
+
+# TECHNICAL_QUESTION_BANK = [
+#     # Topic: Python
+#     {
+#         "topic": "Python",
+#         "question": """What is the output of the following Python code?
+# <pre><code>my_list = [10, 20, 30, 40, 50]
+# print(my_list[1:3])</code></pre>""",
+#         "correct_answer": "[20, 30]",
+#         "incorrect_answers": ["[10, 20, 30]", "[20, 30, 40]", "[10, 20]"],
+#         "explanation": "List slicing [start:end] includes the element at the start index but goes up to, not including, the element at the end index."
+#     },
+#     {
+#         "topic": "Python",
+#         "question": """What will this Python code print?
+# <pre><code>my_dict = {'name': 'Alice', 'age': 25}
+# print(my_dict.get('city', 'Not Found'))</code></pre>""",
+#         "correct_answer": "Not Found",
+#         "incorrect_answers": ["city", "None", "It will raise a KeyError"],
+#         "explanation": "The .get() method is a safe way to access a dictionary key. If the key does not exist, it returns the default value provided (in this case, 'Not Found') instead of raising an error."
+#     },
+#     {
+#         "topic": "Python",
+#         "question": """What is the final value of count?
+# <pre><code>count = 0
+# for i in range(5):
+#   if i % 2 == 0:
+#     count += 1
+# print(count)</code></pre>""",
+#         "correct_answer": "3",
+#         "incorrect_answers": ["2", "5", "4"],
+#         "explanation": "The loop iterates for i = 0, 1, 2, 3, 4. The if condition is true for the even numbers 0, 2, and 4. Therefore, the counter increments 3 times."
+#     },
+#     {
+#         "topic": "Python",
+#         "question": """What is the output of this code?
+# <pre><code>x = 10
+# def my_function():
+#   x = 5
+# my_function()
+# print(x)</code></pre>""",
+#         "correct_answer": "10",
+#         "incorrect_answers": ["5", "None", "It will raise an error"],
+#         "explanation": "The x = 5 inside the function creates a new, local variable x. It does not modify the global variable x outside the function."
+#     },
+
+#     # Topic: SQL
+#     {
+#         "topic": "SQL",
+#         "question": """Given a table Employees with columns ID, Name, and Department, what will this query return?
+# <pre><code>SELECT Department, COUNT(*)
+# FROM Employees
+# GROUP BY Department;</code></pre>""",
+#         "correct_answer": "The number of employees in each department.",
+#         "incorrect_answers": ["A list of all employee names and their department.", "The total number of all employees.", "Only the department names."],
+#         "explanation": "COUNT(*) counts all rows, and GROUP BY Department aggregates those counts for each unique department."
+#     },
+#     {
+#         "topic": "SQL",
+#         "question": """What is the purpose of the LEFT JOIN keyword in this SQL query?
+# <pre><code>SELECT Customers.Name, Orders.ID
+# FROM Customers
+# LEFT JOIN Orders ON Customers.ID = Orders.CustomerID;</code></pre>""",
+#         "correct_answer": "It returns all customers, even those who have not placed any orders.",
+#         "incorrect_answers": ["It only returns customers who have placed an order.", "It only returns orders that have a customer.", "It returns all customers and all orders, matched or not."],
+#         "explanation": "A LEFT JOIN returns all records from the left table (Customers) and the matched records from the right table (Orders). If there is no match, the result is NULL on the right side."
+#     },
+
+#     # Topic: JavaScript
+#     {
+#         "topic": "JavaScript",
+#         "question": """What will be alerted in the browser?
+# <pre><code>let x = '10';
+# let y = 20;
+# alert(x + y);</code></pre>""",
+#         "correct_answer": "1020",
+#         "incorrect_answers": ["30", "20", "It will raise an error"],
+#         "explanation": "In JavaScript, the + operator performs string concatenation if one of the operands is a string. It converts the number 20 to a string and joins it with '10'."
+#     },
+#     {
+#         "topic": "JavaScript",
+#         "question": """After this code runs, what is the value of a?
+# <pre><code>const a = [1, 2, 3];
+# a.push(4);</code></pre>""",
+#         "correct_answer": "It will raise an error because a is a const.",
+#         "incorrect_answers": ["[1, 2, 3, 4]", "[1, 2, 3]", "[4]"],
+#         "explanation": "This is a trick question in some languages, but in JavaScript, const on an array means the variable cannot be reassigned. However, the contents of the array itself can be changed. Therefore, a will be [1, 2, 3, 4]. The correct choice is a trick, let's fix this."
+#     },
+#     {
+#         "topic": "JavaScript",
+#         "question": """After this code runs, what is the value of a? (Corrected)
+# <pre><code>const a = [1, 2, 3];
+# a.push(4);</code></pre>""",
+#         "correct_answer": "[1, 2, 3, 4]",
+#         "incorrect_answers": ["It will raise an error because a is a const.", "[1, 2, 3]", "[4]"],
+#         "explanation": "const prevents a variable from being reassigned. It does not make the object it points to (like an array) immutable. Therefore, methods like .push() that mutate the array are allowed."
+#     },
+
+#     # More Python
+#     {
+#         "topic": "Python",
+#         "question": """What is printed by the following code?
+# <pre><code>my_set = {1, 2, 3}
+# my_set.add(2)
+# print(my_set)</code></pre>""",
+#         "correct_answer": "{1, 2, 3}",
+#         "incorrect_answers": ["{1, 2, 3, 2}", "{1, 2}", "It will raise an error"],
+#         "explanation": "Sets in Python are collections of unique elements. Adding an element that is already present in the set does not change the set."
+#     },
+#     {
+#         "topic": "Python",
+#         "question": "What is a key difference between a Python list and a tuple?",
+#         "correct_answer": "Lists are mutable, while tuples are immutable.",
+#         "incorrect_answers": ["Tuples can store mixed data types, but lists cannot.", "Lists are faster for lookups than tuples.", "Lists use parentheses, while tuples use square brackets."],
+#         "explanation": "Immutability means that once a tuple is created, its contents cannot be changed. The contents of a list can be modified at any time."
+#     },
+#     {
+#         "topic": "Python",
+#         "question": """What is the output of this code?
+# <pre><code>def greet(name="Guest"):
+#   print("Hello, " + name)
+# greet()</code></pre>""",
+#         "correct_answer": "Hello, Guest",
+#         "incorrect_answers": ["Hello, name", "It will raise an error", "Hello, "],
+#         "explanation": "The function greet has a default parameter name='Guest'. If the function is called without an argument, it uses this default value."
+#     },
+
+#     # More SQL
+#     {
+#         "topic": "SQL",
+#         "question": """Which query would you use to select all columns from a table named Products?
+# <pre><code>-- Your query here --</code></pre>""",
+#         "correct_answer": "SELECT * FROM Products;",
+#         "incorrect_answers": ["SELECT ALL FROM Products;", "GET * FROM Products;", "SELECT Products.*;"],
+#         "explanation": "The asterisk * is a wildcard in SQL that represents 'all columns' in a SELECT statement."
+#     },
+#     {
+#         "topic": "SQL",
+#         "question": """What is the purpose of the ORDER BY clause in a SQL query?""",
+#         "correct_answer": "To sort the result set in ascending or descending order.",
+#         "incorrect_answers": ["To filter the results.", "To group rows that have the same values.", "To join two or more tables."],
+#         "explanation": "ORDER BY is used to sort the final result set. By default, it sorts in ascending order (ASC)."
+#     },
+
+#     # Pseudocode
+#     {
+#         "topic": "Pseudocode / Logic",
+#         "question": """What is the final value of 'y' after this pseudocode runs?
+# <pre><code>x = 5
+# y = 10
+# if x > y:
+#   y = x
+# else:
+#   x = y
+# y = x + y</code></pre>""",
+#         "correct_answer": "20",
+#         "incorrect_answers": ["15", "10", "5"],
+#         "explanation": "Since 5 is not greater than 10, the else block runs, setting x to 10. y is still 10. The final line is y = 10 + 10, which results in 20."
+#     },
+#     {
+#         "topic": "Pseudocode / Logic",
+#         "question": """How many times will the "Hello" message be printed?
+# <pre><code>i = 0
+# while i < 3:
+#   print("Hello")
+#   i = i + 1</code></pre>""",
+#         "correct_answer": "3",
+#         "incorrect_answers": ["2", "4", "It will run forever"],
+#         "explanation": "The loop runs for i=0, i=1, and i=2. When i becomes 3, the condition i < 3 is no longer true, and the loop terminates."
+#     }
+# ]
+
+# # Server-side storage for the correct answer and explanation
+# correct_answer_store = {}
+
+# app.secret_key = "your_secret_key"
+# @app.route('/get_technical_question', methods=['GET'])
+# def get_technical_question():
+#     # global correct_answer_store
+#     # correct_answer_store = {} # Reset for the new question
+
+#     try:
+#         # Randomly select one question from our internal bank
+#         question_data = random.choice(TECHNICAL_QUESTION_BANK)
+
+#         # Combine correct and incorrect answers and shuffle them
+#         options = question_data['incorrect_answers'] + [question_data['correct_answer']]
+#         random.shuffle(options)
+
+#         # Store the correct answer and explanation on the server
+#         correct_answer_store['answer'] = question_data['correct_answer']
+#         correct_answer_store['explanation'] = question_data['explanation']
+
+#         return jsonify({
+#             "topic": question_data['topic'],
+#             "question": question_data['question'],
+#             "options": options
+#         })
+        
+#     except Exception as e:
+#         error_message = f"Failed to get a question from the internal bank. Error: {e}"
+#         print(error_message)
+#         return jsonify({"error": error_message}), 500
+
+# @app.route('/evaluate_answer', methods=['POST'])
+# def evaluate_answer():
+#     try:
+#         data = request.get_json()
+#         user_answer = data.get('user_answer')
+
+#         is_correct = (user_answer == correct_answer_store.get('answer'))
+        
+#         return jsonify({
+#             "is_correct": is_correct,
+#             "correct_answer": correct_answer_store.get('answer'),
+#             "explanation": correct_answer_store.get('explanation')
+#         })
+#     except Exception as e:
+#         error_message = f"Failed to evaluate the answer. Error: {e}"
+#         print(error_message)
+#         return jsonify({"error": error_message}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

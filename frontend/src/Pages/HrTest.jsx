@@ -260,11 +260,11 @@ const AICommunicationTrainer = () => {
       {/* Hero Header */}
       <div className="text-center mb-8 animate-fade-in">
         <div className="inline-flex items-center gap-3 mb-4">
-          <div className="text-4xl">🤖</div>
+        {/* <div className="text-4xl">🤖</div>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-            AI Communication Trainer
-          </h1>
-        </div>
+            
+          </h1> */}
+        </div> 
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           Practice your interview skills with real-time AI feedback on body language, speech, and relevance.
         </p>
@@ -285,6 +285,24 @@ const AICommunicationTrainer = () => {
               <p className="text-sm text-gray-500">Time left to answer</p>
             </div>
           )}
+                  {/* Transcript */}
+          <div className="bg-gray-50 rounded-xl p-4">
+            <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
+              <span className="text-xl">💬</span>
+              Transcript
+            </h4>
+            <div className="min-h-[100px] max-h-48 overflow-y-auto p-3 bg-white rounded-lg border border-gray-200 text-sm">
+              <div className="font-medium text-gray-800">{finalTranscript}</div>
+              {interimTranscript && (
+                <div className="text-gray-500 italic mt-2">
+                  {interimTranscript} <span className="animate-pulse">...</span>
+                </div>
+              )}
+              {!finalTranscript && !interimTranscript && (
+                <p className="text-gray-400 italic">Start speaking to see your transcript...</p>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Controls & Feedback */}
@@ -361,24 +379,7 @@ const AICommunicationTrainer = () => {
             </div>
           )}
 
-          {/* Transcript */}
-          <div className="bg-gray-50 rounded-xl p-4">
-            <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <span className="text-xl">💬</span>
-              Transcript
-            </h4>
-            <div className="min-h-[100px] max-h-48 overflow-y-auto p-3 bg-white rounded-lg border border-gray-200 text-sm">
-              <div className="font-medium text-gray-800">{finalTranscript}</div>
-              {interimTranscript && (
-                <div className="text-gray-500 italic mt-2">
-                  {interimTranscript} <span className="animate-pulse">...</span>
-                </div>
-              )}
-              {!finalTranscript && !interimTranscript && (
-                <p className="text-gray-400 italic">Start speaking to see your transcript...</p>
-              )}
-            </div>
-          </div>
+  
         </div>
       </div>
 
