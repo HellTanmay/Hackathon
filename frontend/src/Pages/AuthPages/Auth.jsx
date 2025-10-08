@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { Link } from "react-router";        
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ export default function AuthPage() {
     const e = {};
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "Enter a valid email";
     if (password.length < 6) e.password = "Password must be at least 6 characters";
-    if (isSignUp && password !== confirmPassword) e.confirmPassword = "Passwords must match";
+    if (isSignUp && password !== confirmPassword) e.confirmPassword = "Passwords must match";   
     setErrors(e);
     return Object.keys(e).length === 0;
   };

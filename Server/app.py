@@ -1,6 +1,5 @@
 import os
 import io
-import random
 import uuid
 from datetime import datetime
 from flask import Flask, request, jsonify, send_file
