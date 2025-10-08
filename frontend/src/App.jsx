@@ -9,7 +9,7 @@ import TechnicalTest from "./Pages/TechnicalTest";
 
 import StudentAnalytics from "./Pages/Analytics";
 import AuthPage from "./Pages/AuthPages/Auth";
-import AptitudeTest from "./Pages/Aptitde";
+import Aptitude from "./Pages/Aptitde";
 import Pages from "./Pages/Pages";
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
 
           <Route path="/test-hr" element={<HrTest />} />
           <Route path="/techincal-test" element={<TechnicalTest />} />
-          <Route path="/problem-solving" element={<AptitudeTest />} />
+          <Route path="/problem-solving" element={<Aptitude />} />
           <Route path="/analytics" element={<StudentAnalytics />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/pages" element={<Pages />} />

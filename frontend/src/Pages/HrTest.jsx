@@ -213,6 +213,12 @@ const AICommunicationTrainer = () => {
   const stopRecording = () => {
     if (recognition) {
       recognition.stop();
+      if (isRecording) {
+      isRecording.getTracks().forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+      setStream(null);
+      }
+      
     }
     setIsRecording(false);
     checkRelevance();
@@ -260,10 +266,7 @@ const AICommunicationTrainer = () => {
       {/* Hero Header */}
       <div className="text-center mb-8 animate-fade-in">
         <div className="inline-flex items-center gap-3 mb-4">
-        {/* <div className="text-4xl">🤖</div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-            
-          </h1> */}
+        
         </div> 
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           Practice your interview skills with real-time AI feedback on body language, speech, and relevance.
@@ -337,6 +340,7 @@ const AICommunicationTrainer = () => {
             >
               {isRecording ? 'Stop Answering' : 'Start Answering'}
             </button>
+            
           </div>
 
           {/* Feedback Cards */}

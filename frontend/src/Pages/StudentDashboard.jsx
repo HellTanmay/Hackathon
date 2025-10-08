@@ -31,13 +31,13 @@ const StudentDashboard = () => {
     // Optional: formData.append('user_id', 'some_user_id'); // If authenticated
 
     try {
-    //   const response = await fetch("http://localhost:5000/analyze_resume", {
-    //     method: "POST",
-    //     body: formData,
-    //   });
-    //   if (!response.ok) {
-    //     throw new Error("Analysis failed. Please try again.");
-    //   }
+      const response = await fetch("http://localhost:5000/analyze_resume", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error("Analysis failed. Please try again.");
+      }
       const data1 = await response.json();
       // Handle success: Display results inline (assuming backend returns analysis data)
       // If backend redirects, you might handle it differently (e.g., window.location.href)
@@ -129,31 +129,31 @@ const StudentDashboard = () => {
         {selectedResume && (
           <section className="bg-white rounded-lg shadow-md p-6 w-full">
             <StudentAnalytics />
-        {/* {results&&(   */}
-      {/* //  <div className="w-full max-w-6xl bg-white rounded-lg shadow-xl overflow-hidden"> */}
-        {/* Header */}
-        {/* <header className="bg-blue-600 text-white p-8 text-center rounded-t-lg">
+        {results&&(   
+      <div className="w-full max-w-6xl bg-white rounded-lg shadow-xl overflow-hidden"> 
+         
+        <header className="bg-blue-600 text-white p-8 text-center rounded-t-lg">
           <h1 className="text-3xl font-bold mb-2">Your Resume Report</h1>
           <p className="text-2xl font-light">Overall Score: {results.overall_score}/100</p>
-        </header> */}
+        </header> 
 
         {/* Content */}
-        {/* <div className="p-8"> */}
+        <div className="p-8">
           {/* Strengths and Weaknesses Grid */}
-          {/* <div className="mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5"> */}
+          <div className="mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Strengths Card */}
-              {/* <div className="bg-gray-50 border border-gray-300 rounded-md p-5 border-l-4 border-green-500">
+              <div className="bg-gray-50 border border-gray-300 rounded-md p-5 border-l-4 border-green-500">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">✅ Strengths</h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-700">
                   {results.strengths?.map((item, index) => (
                     <li key={index}>{item}</li>
                   ))}
                 </ul>
-              </div> */}
+              </div>
 
               {/* Weaknesses Card */}
-              {/* <div className="bg-gray-50 border border-gray-300 rounded-md p-5 border-l-4 border-red-500">
+              <div className="bg-gray-50 border border-gray-300 rounded-md p-5 border-l-4 border-red-500">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">❌ Areas for Improvement</h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-700">
                   {results.weaknesses?.map((item, index) => (
@@ -162,29 +162,29 @@ const StudentDashboard = () => {
                 </ul>
               </div>
             </div>
-          </div> */}
+          </div>
 
-          {/* Before & After Section
+          {/* Before & After Section*/}
           <section className="mb-8 col-span-full">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-3">
               Main Point for Improvement: Before & After
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {/* Before Box 
+              {/* Before Box */}
               <div className="bg-red-50 border border-red-300 rounded-md p-4">
                 <h4 className="font-medium text-red-800 mb-2">Before</h4>
                 <pre className="text-sm text-gray-800 whitespace-pre-wrap bg-white p-3 rounded border">{results.before_after_example?.before}</pre>
               </div>
 
-              {/* After Box 
+              {/* After Box */}
               <div className="bg-green-50 border border-green-300 rounded-md p-4">
                 <h4 className="font-medium text-green-800 mb-2">After (Rewritten)</h4>
                 <pre className="text-sm text-gray-800 whitespace-pre-wrap bg-white p-3 rounded border">{results.before_after_example?.after}</pre>
               </div>
             </div>
-          </section> */}
+          </section> 
 
-          {/* Learning Path Section
+          {/* Learning Path Section*/}
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-3">
               Recommended Learning Path
@@ -203,9 +203,9 @@ const StudentDashboard = () => {
                 </div>
               ))}
             </div>
-          </section> */}
+          </section> 
 
-          {/* Final Advice Section
+          {/* Final Advice Section*/}
           <section>
             <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-3">
               Final Actionable Advice
@@ -215,7 +215,7 @@ const StudentDashboard = () => {
             </div>
           </section>
         </div>
-      </div>)} */}
+      </div>)} 
    
 
 
